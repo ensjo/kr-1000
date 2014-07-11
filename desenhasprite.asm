@@ -1,5 +1,6 @@
-#define	YSET	$0359 ; Coordenada vertical do último ponto PLOTado/SETado.
-#define	XSET	$035a ; Coordenada horizontal do último ponto PLOTado/SETado.
+#define	XYSET	$0359 ; Coordenadas do último ponto PLOTado/SETado.
+#define	YSET	XYSET+0 ; Coordenada vertical do último ponto PLOTado/SETado.
+#define	XSET	XYSET+1 ; Coordenada horizontal do último ponto PLOTado/SETado.
 #define	VRAM	$8000 ; Endereço de início da VRAM.
 #define	BANK0	$c879 ; Desabilita VRAM.
 #define	BANK1	$c886 ; Habilita VRAM (bank switch).
@@ -55,7 +56,7 @@ CalculaEndSpriteVram:
 	; mesmo em modo colorido, isto é deve ser o dobro do
 	; valor que se usaria no modo GR.)
 	
-	ld	bc,(YSET) ; b = x, c = y.
+	ld	bc,(XYSET) ; b = x, c = y.
 	ld	a,c
 	ld	c,b
 	rra
