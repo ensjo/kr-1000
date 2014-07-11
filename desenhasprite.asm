@@ -133,30 +133,29 @@ TrataComPaleta:
 	
 TrataComPaletaMono:
 	ld	bc,(PaletaDeCores) ; B = cor nº 1; C = cor nº 0.
-	bit	0,b
+	bit	0,b ; Cor nº 1 = %_______0 ou %_______1?
 	jr	nz,TrataComPaletaMono1_
 
 TrataComPaletaMono0_:
-	bit	0,c
+	bit	0,c ; Cor nº 0 = %_______0 ou %_______1?
 	jr	nz,TrataComPaletaMono01
 
 TrataComPaletaMono00:
 	; Com paleta [0,0] em modo monocromático.
 	; Nem precisamos obter o byte do sprite.
 	; O byte terá todos os seus bits desligados.
-	xor	a
+	xor	a ; A = %00000000.
 	ret
 
 TrataComPaletaMono01:
 	; Com paleta [0,1] em modo monocromático.
 	; Obtém byte do sprite e o inverte.
 	ld	a,(ix+0)
-	inc	ix
 	cpl
 	ret
 
 TrataComPaletaMono1_:
-	bit	0,c
+	bit	0,c ; Cor nº 0 = %_______0 ou %_______1?
 	jr	nz,TrataComPaletaMono11
 
 TrataComPaletaMono10:
@@ -166,7 +165,6 @@ TrataComPaletaMono10:
 TrataSemPaleta:
 	; Apenas obtém o byte do sprite.
 	ld	a,(ix+0)
-	inc	ix
 	ret
 
 TrataComPaletaMono11:
@@ -183,7 +181,6 @@ TrataComPaletaColor:
 	; da paleta, girando o resultado em dois bits.
 
 	ld	a,(ix+0)
-	inc	ix
 	push	de
 	ld	b,4
 
@@ -209,8 +206,10 @@ TrataComPaletaColor0:
 
 TrataPaletaFim:
 
-	; Guarda o valor do byte do sprite em B.
+	; Avança ponteiro dos bytes do sprite.
+	inc	ix
 
+	; Guarda o valor do byte do sprite em B.
 	ld	b,a
 	
 TrataMascara:
